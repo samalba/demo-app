@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 //go:embed templates/*
@@ -23,6 +24,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		data := map[string]string{
 			"text": os.Getenv("TEXT"),
+			"env":  strings.Join(os.Environ(), "\n"),
 		}
 
 		t.ExecuteTemplate(w, "index.html.tmpl", data)
