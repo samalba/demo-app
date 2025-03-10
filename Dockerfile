@@ -7,8 +7,9 @@ RUN go mod download
 
 COPY *.go ./
 COPY ./templates ./templates
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/app-bin
 
-FROM alpine:3.20
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/app-bin
+
+FROM alpine:3.18
 COPY --from=builder /app/app-bin /app/app-bin
 ENTRYPOINT ["/app/app-bin"]
