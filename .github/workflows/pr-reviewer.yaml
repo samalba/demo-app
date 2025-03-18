@@ -1,0 +1,26 @@
+name: PR Review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  dagger:
+    name: Run Dagger Pipeline
+    runs-on: ubuntu-latest
+    # Skip running on draft PRs
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Call Dagger Function to review PR
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          version: "0.17.0-llm.11"
+          verb: call
+          module: github.com/samalba/agents/pr-reviewer
+          args: review-pr --github-token=env://GITHUB_TOKEN --query=${{ github.event.pull_request.number }} --repo-url=${{ github.event.repository.html_url }}
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
