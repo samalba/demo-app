@@ -20,9 +20,10 @@ jobs:
           version: "0.17.0-llm.11"
           verb: call
           module: github.com/samalba/agents/pr-reviewer
-          args: review-pr --github-token=env://GITHUB_TOKEN --query=${{ github.event.pull_request.number }} --repo-url=${{ github.event.repository.html_url }}
+          args: --llm-allow=all review-pr --github-token=env://GITHUB_TOKEN --query=${{ github.event.pull_request.number }} --repo-url=${{ github.event.repository.html_url }}
           cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DAGGER_LLM_ALLOW: "all"
