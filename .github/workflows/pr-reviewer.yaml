@@ -17,7 +17,7 @@ jobs:
       - name: Call Dagger Function to review PR
         uses: dagger/dagger-for-github@8.0.0
         with:
-          version: "0.17.0-llm.11"
+          version: "latest"
           verb: call
           module: github.com/samalba/agents/pr-reviewer
           args: --allow-llm=all review-pr --github-token=env://GH_TOKEN --query=${{ github.event.pull_request.number }} --repo-url=${{ github.event.repository.html_url }}
